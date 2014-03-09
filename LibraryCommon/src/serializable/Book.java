@@ -24,7 +24,8 @@ public class Book implements Serializable {
      * @param isbn the ISBN of the book.
      * @throws IllegalArgumentException
      */
-    public Book(String title, String author, int year, Rating rating, String isbn) {
+    public Book(String title, String author, int year, Rating rating,
+            String isbn) throws IllegalArgumentException {
         super();
         this.setAuthor(author);
         this.setRating(rating);
@@ -52,12 +53,13 @@ public class Book implements Serializable {
      * @return whether or not the ISBN value has the correct format.
      */
     public static boolean correctISBNFormat(String isbn) {
-        if (isbn.length() == 10) return isbn.matches("d+");
+        String regex = "\\d+";
+        if (isbn.length() == 10) return isbn.matches(regex);
         
         if (isbn.length() == 14) {
-            String i[] = isbn.split("-");
+            String i[] = isbn.split("\\-");
             if (i[0].length() != 3) return false;
-            return i[0].matches("d+") && correctISBNFormat(i[1]);
+            return i[0].matches(regex) && correctISBNFormat(i[1]);
         }
         
         return false;
