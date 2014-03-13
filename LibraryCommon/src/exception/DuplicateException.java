@@ -15,5 +15,9 @@ public class DuplicateException extends RuntimeException {
     public DuplicateException(Book book) {
         super("The item with title '" + book.getTitle()
             + "' is already in the library.");
-    }    
+    }
+    
+    public DuplicateException(String message) {
+        super(message);
+    }
 }

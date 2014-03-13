@@ -28,14 +28,14 @@ public interface IRemoteLibrary {
      * @param book the book to be removed from the library.
      * @throws RemoteException
      */
-    public void removeItem (Book book) throws RemoteException;
+    public void removeBook (Book book) throws RemoteException;
     
     /**
      * Removes the book with given ISBN from the library.
      * @param isbn the ISBN of the book to be removed from the library.
      * @throws RemoteException
      */
-    public void removeItem (String isbn) throws RemoteException;
+    public void removeBook (String isbn) throws RemoteException;
     
     /**
      * Find a book with given ISBN in the library.
@@ -44,7 +44,7 @@ public interface IRemoteLibrary {
      * @throws RemoteException
      * @throws BookNotFoundException
      */
-    public Book lookup (String isbn) throws RemoteException, BookNotFoundException;
+    public Book lookupBook (String isbn) throws RemoteException, BookNotFoundException;
     
     /**
      * @return the list of items.

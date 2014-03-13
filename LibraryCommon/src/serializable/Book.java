@@ -13,6 +13,7 @@ public class Book implements Serializable {
     private int year;
     private Rating rating;
     private String isbn;
+    private String owner;
     
     /**
      * Instantiates a new Book object.
@@ -22,16 +23,18 @@ public class Book implements Serializable {
      * @param year the publishing year of the book.
      * @param rating the rating of the book.
      * @param isbn the ISBN of the book.
+     * @param owner the owner of this book.
      * @throws IllegalArgumentException
      */
     public Book(String title, String author, int year, Rating rating,
-            String isbn) throws IllegalArgumentException {
+            String isbn, String owner) throws IllegalArgumentException {
         super();
         this.setAuthor(author);
         this.setRating(rating);
         this.setTitle(title);
         this.setYear(year);
         this.setISBN(isbn);
+        this.setOwner(owner);
     }
     
     /**
@@ -74,6 +77,17 @@ public class Book implements Serializable {
             throw new IllegalArgumentException("The length of the author"
                     + " name must be greater than zero.");
         this.author = author;
+    }
+
+    /**
+     * @param owner 
+     * @throws IllegalArgumentException
+     */
+    private void setOwner(String owner) {
+        if (author.isEmpty())
+            throw new IllegalArgumentException("The length of the author"
+                    + " name must be greater than zero.");
+        this.owner = owner;
     }
 
     /**
@@ -134,6 +148,10 @@ public class Book implements Serializable {
      */
     public String getISBN() {
         return isbn;
+    }
+
+    public String getOwner() {
+        return owner;
     }
     
     @Override
