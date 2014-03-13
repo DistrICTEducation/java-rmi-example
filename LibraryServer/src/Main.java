@@ -1,8 +1,9 @@
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import serializable.Book;
 import system.Library;
-import util.IOHelper;
+import system.User;
 
 /**
  * The Main class contains the main method to run the server.
@@ -22,9 +23,19 @@ public class Main {
         
         // Load some test data :
         try {
-            IOHelper.loadDataFromCSV(library, "src/data.csv");
+            IOHelper.loadUsersFromCSV(library, "src/users.csv");
+            IOHelper.loadBooksFromCSV(library, "src/books.csv");
         } catch (IOException ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        // show something :
+        for (User u : library.getUsers()) {
+            System.out.println(u);
+        }
+        
+        for (Book b : library.getBooks()) {
+            System.out.println(b);
         }
     }
 }

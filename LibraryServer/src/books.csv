@@ -1,0 +1,10 @@
+#CSV file for the distributed library application
+#title,author,year,rating,isbn
+Learning Python 5th Edition,Mark Lutz,2013,GOOD,978-1449355739,matthew
+Introducing Microsoft SQL Server 2012,Ross Mistry,2012,GOOD,978-0735665156,matthew
+Harry Potter and the Deathly Hallows,J.K.Rowling,2009,EXCELLENT,978-0545139700,rachel
+Harry Potter And The Goblet Of Fire,J.K.Rowling,2002,EXCELLENT,978-0439139601,rachel
+The Unbearable Lightness of Being,Milan Kundera,2009,GOOD,978-0061148521,andrew
+The English Patient,Michael Ondaatje,1993,GOOD,978-0679745204,andrew
+God Is Not Great: How Religion Poisons Everything,Christopher Hitchens,2009,GOOD,978-0446697965,eliot
+The God Delusion,Richard Dawkins,2008,GOOD,978-0618918249,eliot
