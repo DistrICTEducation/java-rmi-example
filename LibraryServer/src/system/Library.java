@@ -1,13 +1,13 @@
 package system;
 
-import exception.BookNotFoundException;
-import exception.DuplicateException;
-import exception.UserNotFoundException;
-import serializable.Book;
+import interfaces.serializable.User;
+import exceptions.BookNotFoundException;
+import exceptions.DuplicateException;
+import exceptions.UserNotFoundException;
+import interfaces.serializable.Book;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import remote.IRemoteLibrary;
 
 /**
  * The Library class is an implementation of the IRemoteLibrary interface, which
@@ -15,7 +15,7 @@ import remote.IRemoteLibrary;
  * 
  * @author Joris Schelfaut
  */
-public class Library implements IRemoteLibrary {
+public class Library {
 
     private final List<Book> books;
     private final List<User> users;
@@ -29,7 +29,6 @@ public class Library implements IRemoteLibrary {
         this.users = new ArrayList<>();
     }
     
-    @Override
     public synchronized void addBook (Book book)
             throws NullPointerException, DuplicateException {
         if (book == null) throw new NullPointerException("The book resolved as NULL.");
@@ -37,19 +36,16 @@ public class Library implements IRemoteLibrary {
         this.books.add(book);
     }
     
-    @Override
     public void removeBook (Book book) {
         this.books.remove(book);
     }
     
-    @Override
     public void removeBook (String isbn) {
         for (Book b : this.books) {
             if (b.getISBN().equals(isbn)) this.books.remove(b);
         }
     }
     
-    @Override
     public Book lookupBook (String isbn) throws BookNotFoundException {
         for (Book b : this.books) {
             if (b.getISBN().equals(isbn)) return b;
@@ -57,7 +53,6 @@ public class Library implements IRemoteLibrary {
         throw new BookNotFoundException(isbn);
     }
     
-    @Override
     public List<Book> getBooks() {
         return Collections.unmodifiableList(this.books);
     }
