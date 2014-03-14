@@ -1,9 +1,9 @@
 import exceptions.DuplicateException;
-import interfaces.remote.IRemoteLibraryModule;
-import interfaces.remote.IRemoteSessionModule;
-import interfaces.serializable.Book;
-import interfaces.serializable.Rating;
-import interfaces.serializable.User;
+import remote.IRemoteLibraryModule;
+import remote.IRemoteSessionModule;
+import args.Book;
+import args.Rating;
+import system.User;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;

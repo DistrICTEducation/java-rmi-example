@@ -5,10 +5,10 @@ import exceptions.BookNotFoundException;
 import exceptions.DuplicateException;
 import java.rmi.RemoteException;
 import java.util.List;
-import interfaces.remote.IRemoteLibraryModule;
-import interfaces.remote.IRemoteSessionModule;
-import interfaces.serializable.Book;
-import interfaces.serializable.Session;
+import remote.IRemoteLibraryModule;
+import remote.IRemoteSessionModule;
+import args.Book;
+import args.Session;
 
 /**
  * Implementation for the IRemoteLibraryModule. The LibraryModule is stateless.
@@ -36,6 +36,8 @@ public class LibraryModule implements IRemoteLibraryModule {
             NullPointerException, DuplicateException, AuthorizationException {
         if (! this.sessionModule.isAuthenticated(session))
             throw new AuthorizationException(session);
+        if (! book.getOwner().equalsIgnoreCase(session.getUsername()))
+            throw new AuthorizationException(session);
         this.library.addBook(book);
     }
     
@@ -43,6 +45,8 @@ public class LibraryModule implements IRemoteLibraryModule {
     public void removeBook(Book book, Session session) throws RemoteException,
             AuthorizationException {
         if (! this.sessionModule.isAuthenticated(session))
+            throw new AuthorizationException(session);
+        if (! book.getOwner().equalsIgnoreCase(session.getUsername()))
             throw new AuthorizationException(session);
         this.library.removeBook(book);
     }
@@ -52,16 +56,32 @@ public class LibraryModule implements IRemoteLibraryModule {
             AuthorizationException {
         if (! this.sessionModule.isAuthenticated(session))
             throw new AuthorizationException(session);
+        try {
+            this.library.lookupBook(isbn, session.getUsername());
+        } catch (BookNotFoundException e) {
+            throw new AuthorizationException(session);
+        }
         this.library.removeBook(isbn);
     }
 
     @Override
-    public Book lookupBook(String isbn) throws RemoteException, BookNotFoundException {
-        return this.library.lookupBook(isbn);
+    public Book lookupBook(String isbn, String owner)
+            throws RemoteException, BookNotFoundException {
+        return this.library.lookupBook(isbn, owner);
     }
 
     @Override
     public List<Book> getBooks() throws RemoteException {
         return this.library.getBooks();
+    }
+
+    @Override
+    public List<String> getOwnersForBook(String isbn) throws RemoteException {
+        return this.library.getOwnersForBook(isbn);
+    }
+
+    @Override
+    public List<Book> getBooksForOwner(String owner) throws RemoteException {
+        return this.library.getBooksForOwner(owner);
     }
 }

@@ -1,10 +1,9 @@
 package system;
 
-import interfaces.serializable.User;
 import exceptions.BookNotFoundException;
 import exceptions.DuplicateException;
 import exceptions.UserNotFoundException;
-import interfaces.serializable.Book;
+import args.Book;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -46,9 +45,10 @@ public class Library {
         }
     }
     
-    public Book lookupBook (String isbn) throws BookNotFoundException {
+    public Book lookupBook (String isbn, String owner) throws BookNotFoundException {
         for (Book b : this.books) {
-            if (b.getISBN().equals(isbn)) return b;
+            if (b.getISBN().equals(isbn) && b.getOwner().equalsIgnoreCase(owner))
+                return b;
         }
         throw new BookNotFoundException(isbn);
     }
@@ -104,5 +104,29 @@ public class Library {
         for (User u : this.users) {
             if (u.getName().equals(name)) this.users.remove(u);
         }
+    }
+    
+    /**
+     * @param isbn the ISBN of the book.
+     * @return the list of names of owners of the book with given ISBN.
+     */
+    public List<String> getOwnersForBook(String isbn) {
+        List<String> owners = new ArrayList<>();
+        for (Book b : this.books) {
+            if (b.getISBN().equals(isbn)) owners.add(b.getOwner());
+        }
+        return owners;
+    }
+    
+    /**
+     * @param owner the owners to get the books from.
+     * @return the list of books owned by a user given name.
+     */
+    public List<Book> getBooksForOwner(String owner) {
+        List<Book> booklist = new ArrayList<>();
+        for (Book b : this.books) {
+            if (b.getOwner().equals(owner)) booklist.add(b);
+        }
+        return booklist;
     }
 }

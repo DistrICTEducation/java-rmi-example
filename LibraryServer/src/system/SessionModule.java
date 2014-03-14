@@ -2,13 +2,13 @@ package system;
 
 import exceptions.AuthenticationException;
 import exceptions.UserNotFoundException;
-import interfaces.remote.IRemoteSessionModule;
-import interfaces.serializable.Session;
-import interfaces.serializable.User;
+import remote.IRemoteSessionModule;
+import args.Session;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashSet;
+import java.util.Random;
 import java.util.Set;
 
 /**
@@ -57,13 +57,22 @@ public class SessionModule implements IRemoteSessionModule {
             if (s.getUsername().equals(username)) this.sessions.remove(s);
         }
     }
-    
+
+    /**
+     * @return a new session key.
+     */
     private String generateSessionkey() {
-        String key = "";
-        for (int i = 0; i < 8; i++) {
-            key += "";
+        char[] chars = ("abcdefghijklmnopqrstuvwxyz"
+                + "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                + "0123456789" + "-_'()!?,.:/")
+                .toCharArray();
+        StringBuilder sb = new StringBuilder();
+        Random random = new Random();
+        for (int i = 0; i < 16; i++) {
+            char c = chars[random.nextInt(chars.length)];
+            sb.append(c);
         }
-        return key;
+        return sb.toString();
     }
     
     /**
