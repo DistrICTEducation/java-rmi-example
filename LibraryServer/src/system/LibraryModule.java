@@ -61,7 +61,7 @@ public class LibraryModule implements IRemoteLibraryModule {
         } catch (BookNotFoundException e) {
             throw new AuthorizationException(session);
         }
-        this.library.removeBook(isbn);
+        this.library.removeBook(isbn, session.getUsername());
     }
 
     @Override

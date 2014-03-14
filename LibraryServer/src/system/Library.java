@@ -28,6 +28,11 @@ public class Library {
         this.users = new ArrayList<>();
     }
     
+    /**
+     * @param book the book to be added to the library.
+     * @throws NullPointerException if the book resolves as NULL.
+     * @throws DuplicateException if the book (by this owner) was already in the library.
+     */
     public synchronized void addBook (Book book)
             throws NullPointerException, DuplicateException {
         if (book == null) throw new NullPointerException("The book resolved as NULL.");
@@ -35,16 +40,30 @@ public class Library {
         this.books.add(book);
     }
     
+    /**
+     * @param book the book to be removed.
+     */
     public void removeBook (Book book) {
         this.books.remove(book);
     }
     
-    public void removeBook (String isbn) {
+    /**
+     * @param isbn the ISBN of the book that will be removed.
+     * @param owner the owner of the book that will be removed.
+     */
+    public void removeBook (String isbn, String owner) {
         for (Book b : this.books) {
-            if (b.getISBN().equals(isbn)) this.books.remove(b);
+            if (b.getISBN().equals(isbn) && b.getOwner().equalsIgnoreCase(owner))
+                this.books.remove(b);
         }
     }
     
+    /**
+     * @param isbn the ISBN of the book.
+     * @param owner the owner of the book.
+     * @return the book with given owner and ISBN.
+     * @throws BookNotFoundException 
+     */
     public Book lookupBook (String isbn, String owner) throws BookNotFoundException {
         for (Book b : this.books) {
             if (b.getISBN().equals(isbn) && b.getOwner().equalsIgnoreCase(owner))
@@ -53,6 +72,9 @@ public class Library {
         throw new BookNotFoundException(isbn);
     }
     
+    /**
+     * @return all the books in this library.
+     */
     public List<Book> getBooks() {
         return Collections.unmodifiableList(this.books);
     }
