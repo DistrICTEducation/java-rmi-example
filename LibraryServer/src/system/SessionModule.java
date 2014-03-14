@@ -1,9 +1,12 @@
 package system;
 
+import args.Book;
+import args.Rating;
 import exceptions.AuthenticationException;
 import exceptions.UserNotFoundException;
 import remote.IRemoteSessionModule;
 import args.Session;
+import exceptions.DuplicateException;
 import java.io.UnsupportedEncodingException;
 import java.rmi.RemoteException;
 import java.security.MessageDigest;
@@ -83,14 +86,55 @@ public class SessionModule implements IRemoteSessionModule {
      */
     private boolean checkPassword(User user, String password) {
         try {
-            byte[] bytes = password.getBytes("UTF-8");
-            MessageDigest md = MessageDigest.getInstance("MD5");
-            byte[] digest = md.digest(bytes);
-            String hash = digest.toString();
-            if (hash.equals(user.getPassword())) return true;
+            if (md5(password).equals(user.getPassword())) return true;
         } catch (UnsupportedEncodingException | NoSuchAlgorithmException ex) {
             return false;
         }
         return false;
+    }
+    
+    private String md5 (String password) throws UnsupportedEncodingException, NoSuchAlgorithmException {
+        byte[] bytes = password.getBytes("UTF-8");
+        MessageDigest md = MessageDigest.getInstance("MD5");
+        byte[] hash = md.digest(bytes);
+        StringBuilder hexString = new StringBuilder();
+
+        for (int i = 0; i < hash.length; i++) {
+            if ((0xff & hash[i]) < 0x10) {
+                hexString.append("0").append(Integer.toHexString((0xFF & hash[i])));
+            } else {
+                hexString.append(Integer.toHexString(0xFF & hash[i]));
+            }
+        }
+        return hexString.toString();
+    }
+    
+    /**
+     * Test some functionality of this class.
+     * @param args arguments for running this class main method.
+     */
+    public static void main(String[] args) {
+        try {
+            // md5(george) = 9b306ab04ef5e25f9fb89c998a6aedab
+            Library l = new Library();
+            
+            User u = new User("george", "9b306ab04ef5e25f9fb89c998a6aedab");
+            System.out.println(u);
+            l.addUser(u);
+            
+            SessionModule sm = new SessionModule(l);
+            LibraryModule lm = new LibraryModule(l, sm);
+            
+            Session s = sm.authenticate("george", "george");
+            System.out.println(s);
+            
+            Book b1 = new Book("Harry Potter and the Deathly Hallows",
+                "J.K. Rowling", 2009, Rating.EXCELLENT, "978-0545139700", "george");
+            
+            lm.addBook(b1, s);
+            for (Book b : lm.getBooks()) System.out.println(b);
+        } catch (NullPointerException | DuplicateException | AuthenticationException | RemoteException e) {
+            e.printStackTrace();
+        }
     }
 }
