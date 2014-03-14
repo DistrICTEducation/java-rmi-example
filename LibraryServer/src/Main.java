@@ -1,3 +1,4 @@
+import rmi.PolicyFileLocator;
 import exceptions.DuplicateException;
 import remote.IRemoteLibraryModule;
 import remote.IRemoteSessionModule;
@@ -64,7 +65,7 @@ public class Main {
     
     /**
      * @param library the library to load the users to.
-     * @param file the csv file to load the users from.
+     * @param file the CSV file to load the users from.
      * @throws FileNotFoundException
      * @throws IOException 
      */
