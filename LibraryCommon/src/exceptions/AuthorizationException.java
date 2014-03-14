@@ -1,6 +1,6 @@
 package exceptions;
 
-import interfaces.serializable.Session;
+import args.Session;
 
 /**
  * @author Joris Schelfaut

@@ -1,6 +1,6 @@
 package exceptions;
 
-import interfaces.serializable.Book;
+import args.Book;
 
 /**
  * @author Joris Schelfaut

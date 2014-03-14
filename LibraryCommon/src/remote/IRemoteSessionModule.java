@@ -1,7 +1,7 @@
-package interfaces.remote;
+package remote;
 
 import exceptions.AuthenticationException;
-import interfaces.serializable.Session;
+import args.Session;
 import java.rmi.Remote;
 
 /**

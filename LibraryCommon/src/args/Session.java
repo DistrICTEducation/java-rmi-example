@@ -1,4 +1,4 @@
-package interfaces.serializable;
+package args;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -49,7 +49,6 @@ public class Session implements Serializable {
 
     @Override
     public String toString() {
-        return "Session{" + this.getUsername()
-                + "[" + this.getSessionkey() + "]}";
+        return "Session{" + this.getUsername() + "[" + this.getSessionkey() + "]}";
     }
 }

@@ -1,6 +1,7 @@
-package interfaces.serializable;
+package args;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * The Book class is an item with ISBN number.
@@ -150,6 +151,9 @@ public class Book implements Serializable {
         return isbn;
     }
 
+    /**
+     * @return the name of the owner of this book.
+     */
     public String getOwner() {
         return owner;
     }
@@ -161,7 +165,10 @@ public class Book implements Serializable {
     
     @Override
     public int hashCode() {
-        return this.getISBN().hashCode();
+        int hash = 7;
+        hash = 83 * hash + Objects.hashCode(this.getISBN());
+        hash = 83 * hash + Objects.hashCode(this.getOwner());
+        return hash;
     }
 
     @Override
@@ -172,7 +179,8 @@ public class Book implements Serializable {
             Book i = (Book) obj;
             if (! this.getISBN().equals(i.getISBN()))
                 return false;
+            return this.getOwner().equalsIgnoreCase(i.getOwner());
         }
-        return true;
+        return false;
     }
 }

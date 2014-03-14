@@ -1,12 +1,12 @@
-package interfaces.remote;
+package remote;
 
 import exceptions.AuthorizationException;
 import exceptions.DuplicateException;
 import exceptions.BookNotFoundException;
 import java.rmi.RemoteException;
 import java.util.List;
-import interfaces.serializable.Book;
-import interfaces.serializable.Session;
+import args.Book;
+import args.Session;
 import java.rmi.Remote;
 
 /**
@@ -52,15 +52,31 @@ public interface IRemoteLibraryModule extends Remote {
     /**
      * Find a book with given ISBN in the library.
      * @param isbn the ISBN of the book.
+     * @param owner the owner of the book.
      * @return the book with corresponding ISBN.
      * @throws RemoteException
      * @throws BookNotFoundException
      */
-    public Book lookupBook (String isbn) throws RemoteException, BookNotFoundException;
+    public Book lookupBook (String isbn, String owner)
+            throws RemoteException, BookNotFoundException;
     
     /**
      * @return the list of items.
      * @throws RemoteException
      */
     public List<Book> getBooks() throws RemoteException;
+    
+    /**
+     * @param isbn the ISBN of the book.
+     * @return the owners for a book with given ISBN.
+     * @throws RemoteException 
+     */
+    public List<String> getOwnersForBook(String isbn) throws RemoteException;
+    
+    /**
+     * @param owner the owner of the books.
+     * @return the books of a given owner.
+     * @throws RemoteException
+     */
+    public List<Book> getBooksForOwner(String owner) throws RemoteException;
 }
