@@ -1,4 +1,4 @@
-package serializable;
+package interfaces.serializable;
 
 /**
  * A rating is either excellent, good, average or poor.

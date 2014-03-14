@@ -1,6 +1,6 @@
-package exception;
+package exceptions;
 
-import serializable.Book;
+import interfaces.serializable.Book;
 
 /**
  * @author Joris Schelfaut
