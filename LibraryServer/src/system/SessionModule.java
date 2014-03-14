@@ -5,6 +5,7 @@ import exceptions.UserNotFoundException;
 import remote.IRemoteSessionModule;
 import args.Session;
 import java.io.UnsupportedEncodingException;
+import java.rmi.RemoteException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashSet;
@@ -32,7 +33,7 @@ public class SessionModule implements IRemoteSessionModule {
 
     @Override
     public Session authenticate(String username, String password)
-            throws AuthenticationException {
+            throws AuthenticationException, RemoteException {
         User user = null;
         try {
             user = this.library.lookupUser(username);
@@ -47,12 +48,12 @@ public class SessionModule implements IRemoteSessionModule {
     }
 
     @Override
-    public boolean isAuthenticated(Session session) {
+    public boolean isAuthenticated(Session session) throws RemoteException {
         return this.sessions.contains(session);
     }
 
     @Override
-    public void destroySession(String username) {
+    public void destroySession(String username) throws RemoteException {
         for (Session s : this.sessions) {
             if (s.getUsername().equals(username)) this.sessions.remove(s);
         }
