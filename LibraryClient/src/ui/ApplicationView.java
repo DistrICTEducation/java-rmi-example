@@ -107,6 +107,10 @@ public class ApplicationView {
             printException(ae);
             System.err.println("You entered a wrong combination of username and password.");
             showStartMenu();
+        } catch (RemoteException ex) {
+            printException(ex);
+            System.err.println("INFO : Something went wrong, you were redirected to the start menu.");
+            showStartMenu();
         }
     }
     
@@ -126,7 +130,7 @@ public class ApplicationView {
         System.out.println("- Please select an option :           -");
         System.out.println("- 1. Library contents overview.       -");
         System.out.println("- 2. Add a new book.                  -");
-        System.out.println("- 3. Stop the application.            -");
+        System.out.println("- 3. Log out.                         -");
         System.out.println("---------------------------------------");
 
         int result = readInt(1, 3);
@@ -138,7 +142,7 @@ public class ApplicationView {
                 showAddBookWizard();
                 break;
             case 3:
-                showExitMessage();
+                logout();
                 break;
         }
     }
@@ -193,12 +197,26 @@ public class ApplicationView {
         
         try {
             Book book = new Book(title, author, year, rating, isbn, getSession().getUsername());
-            this.getLibraryModule().addBook(book, null);
+            this.getLibraryModule().addBook(book, getSession());
             System.out.println("INFO : The item was successfully added to the library.");
         } catch (IllegalArgumentException | RemoteException | NullPointerException | DuplicateException | AuthorizationException ex) {
             printException(ex);
             System.err.println("INFO : The item was not added to the library.");
             showBooksOverview();
+        }
+    }
+    
+    /**
+     * Log the user off. If successful, the user ends up on the start menu.
+     */
+    private void logout() {
+        try {
+            getSessionModule().destroySession(getSession().getUsername());
+            showStartMenu();
+        } catch (RemoteException re) {
+            printException(re);
+            System.err.println("INFO : Something went wrong, you were not logged off.");
+            showMainMenu();
         }
     }
 
