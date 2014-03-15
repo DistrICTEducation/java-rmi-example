@@ -4,3 +4,12 @@
 *.jar
 *.war
 *.ear
+/LibraryServer/nbproject/private/
+/LibraryCommon/nbproject/private/
+/LibraryCommon/dist/
+/LibraryCommon/build/
+/LibraryServer/build/
+/LibraryServer/dist/
+/LibraryClient/nbproject/private/
+/LibraryClient/build/
+/LibraryClient/dist/
