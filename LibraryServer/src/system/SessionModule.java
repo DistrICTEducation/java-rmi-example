@@ -93,6 +93,12 @@ public class SessionModule implements IRemoteSessionModule {
         return false;
     }
     
+    /**
+     * @param password the password to be hashed.
+     * @return the md5 hash of the given password.
+     * @throws UnsupportedEncodingException
+     * @throws NoSuchAlgorithmException 
+     */
     private String md5 (String password) throws UnsupportedEncodingException, NoSuchAlgorithmException {
         byte[] bytes = password.getBytes("UTF-8");
         MessageDigest md = MessageDigest.getInstance("MD5");

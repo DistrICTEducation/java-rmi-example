@@ -44,19 +44,16 @@ public class Main {
                 Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
             }
             
-            IRemoteSessionModule sessionModule = new SessionModule(library);
-            IRemoteLibraryModule libraryModule = new LibraryModule(library, sessionModule);
-            
             Registry registry = LocateRegistry.getRegistry(RMISettings.REGISTRY_HOST, RMISettings.REGISTRY_PORT);
             
             // Register the remote objects :
-            IRemoteSessionModule stub1 = (IRemoteSessionModule)
-                    UnicastRemoteObject.exportObject(sessionModule, 0);
-            registry.rebind(RMISettings.SESSION_SERVICE_NAME, stub1);
-            
-            IRemoteLibraryModule stub2 = (IRemoteLibraryModule)
-                    UnicastRemoteObject.exportObject(libraryModule, 0);
-            registry.rebind(RMISettings.LIBRARY_SERVICE_NAME, stub2);
+			IRemoteSessionModule sessionModule = new SessionModule(library);
+			IRemoteSessionModule stubSessionModule = (IRemoteSessionModule) UnicastRemoteObject.exportObject(sessionModule, 0);
+			registry.rebind(RMISettings.SESSION_SERVICE_NAME, stubSessionModule);
+			
+			IRemoteLibraryModule libraryModule = new LibraryModule(library, sessionModule);
+			IRemoteLibraryModule stubLibraryModule = (IRemoteLibraryModule) UnicastRemoteObject.exportObject(libraryModule, 0);
+			registry.rebind(RMISettings.LIBRARY_SERVICE_NAME, stubLibraryModule);
             
         } catch (RemoteException ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
