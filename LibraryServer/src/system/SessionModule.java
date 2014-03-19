@@ -114,33 +114,4 @@ public class SessionModule implements IRemoteSessionModule {
         }
         return hexString.toString();
     }
-    
-    /**
-     * Test some functionality of this class.
-     * @param args arguments for running this class main method.
-     */
-    public static void main(String[] args) {
-        try {
-            // md5(george) = 9b306ab04ef5e25f9fb89c998a6aedab
-            Library l = new Library();
-            
-            User u = new User("george", "9b306ab04ef5e25f9fb89c998a6aedab");
-            System.out.println(u);
-            l.addUser(u);
-            
-            SessionModule sm = new SessionModule(l);
-            LibraryModule lm = new LibraryModule(l, sm);
-            
-            Session s = sm.authenticate("george", "george");
-            System.out.println(s);
-            
-            Book b1 = new Book("Harry Potter and the Deathly Hallows",
-                "J.K. Rowling", 2009, Rating.EXCELLENT, "978-0545139700", "george");
-            
-            lm.addBook(b1, s);
-            for (Book b : lm.getBooks()) System.out.println(b);
-        } catch (NullPointerException | DuplicateException | AuthenticationException | RemoteException e) {
-            e.printStackTrace();
-        }
-    }
 }
