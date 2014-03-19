@@ -1,4 +1,3 @@
-import rmi.PolicyFileLocator;
 import exceptions.DuplicateException;
 import remote.IRemoteLibraryModule;
 import remote.IRemoteSessionModule;
@@ -44,16 +43,22 @@ public class Main {
                 Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
             }
             
-            Registry registry = LocateRegistry.getRegistry(RMISettings.REGISTRY_HOST, RMISettings.REGISTRY_PORT);
+            // Set the security manager :
+            if (System.getSecurityManager() != null) {
+                System.setSecurityManager(null);
+            }
+            
+            // Create a new registry with given port :
+            Registry registry = LocateRegistry.createRegistry(RMISettings.REGISTRY_PORT);
             
             // Register the remote objects :
-			IRemoteSessionModule sessionModule = new SessionModule(library);
-			IRemoteSessionModule stubSessionModule = (IRemoteSessionModule) UnicastRemoteObject.exportObject(sessionModule, 0);
-			registry.rebind(RMISettings.SESSION_SERVICE_NAME, stubSessionModule);
-			
-			IRemoteLibraryModule libraryModule = new LibraryModule(library, sessionModule);
-			IRemoteLibraryModule stubLibraryModule = (IRemoteLibraryModule) UnicastRemoteObject.exportObject(libraryModule, 0);
-			registry.rebind(RMISettings.LIBRARY_SERVICE_NAME, stubLibraryModule);
+            IRemoteSessionModule sessionModule = new SessionModule(library);
+            IRemoteSessionModule stubSessionModule = (IRemoteSessionModule) UnicastRemoteObject.exportObject(sessionModule, 0);
+            registry.rebind(RMISettings.SESSION_SERVICE_NAME, stubSessionModule);
+
+            IRemoteLibraryModule libraryModule = new LibraryModule(library, sessionModule);
+            IRemoteLibraryModule stubLibraryModule = (IRemoteLibraryModule) UnicastRemoteObject.exportObject(libraryModule, 0);
+            registry.rebind(RMISettings.LIBRARY_SERVICE_NAME, stubLibraryModule);
             
         } catch (RemoteException ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
@@ -132,18 +137,5 @@ public class Main {
      */
     private static void printException(Exception ex) {
         System.err.println(ex.getClass().getName() + " : " + ex.getLocalizedMessage());
-    }
-    
-    static final void setupRMI() {
-        System.setProperty("java.security.policy", PolicyFileLocator.getLocationOfPolicyFile());
-        if (System.getSecurityManager() == null) {
-            System.setSecurityManager(new SecurityManager());
-        }
-    }
-
-    final static void disableSecurityManager() {
-        if (System.getSecurityManager() != null) {
-            System.setSecurityManager(null);
-        }
     }
 }

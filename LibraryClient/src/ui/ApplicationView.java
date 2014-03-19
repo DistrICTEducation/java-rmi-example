@@ -199,10 +199,11 @@ public class ApplicationView {
             Book book = new Book(title, author, year, rating, isbn, getSession().getUsername());
             this.getLibraryModule().addBook(book, getSession());
             System.out.println("INFO : The item was successfully added to the library.");
+            showBooksOverview();
         } catch (IllegalArgumentException | RemoteException | NullPointerException | DuplicateException | AuthorizationException ex) {
             printException(ex);
             System.err.println("INFO : The item was not added to the library.");
-            showBooksOverview();
+            showMainMenu();
         }
     }
     
